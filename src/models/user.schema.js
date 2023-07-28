@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import bcrypt from "bcryptjs";
 
 const userSchema = new mongoose.Schema({
 
@@ -24,7 +25,19 @@ const userSchema = new mongoose.Schema({
     }, forgotPasswordToken: String,
     forgotPasswordExpiry: Date
 
-}, { timestamps: true }
-);
+}, { timestamps: true } )
 
-export default mongoose.model('collection', userSchema);
+
+//encrypt the password before saving,hooks//
+userSchema.pre("save", async function (next) {
+    if (!this.isModified("password")) return next()
+    this.password = await bcrypt.hash(this.password,10)
+    next()
+} )
+userSchema.methods = {
+    comparepassword: async function (enteredpassword) {
+    return  await  bcrypt.compare(enteredpassword,this.password)
+    }
+}
+
+export default mongoose.model('user', userSchema);

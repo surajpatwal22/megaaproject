@@ -102,3 +102,24 @@ export const logout = asyncHandler(async(req,res)=>{
         message: 'Logged Out'
     })
 })
+
+/**********************************************************
+ * @GET_PROFILE
+ * @route http://localhost:5000/api/auth/profile
+ * @description check token in cookies, if present then returns user details
+ * @returns Logged In User Details
+ **********************************************************/
+
+export const getProfile = asyncHandler(async (req, res) => {
+    
+    const {user} = req
+
+    if (!user) {
+        throw new CustomError("User not found", 401)
+    }
+
+    res.status(200).json({
+        success: true,
+        user
+    })
+})

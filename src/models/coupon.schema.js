@@ -5,14 +5,14 @@ const couponSchema = new mongoose.Schema({
         required:true,
         unique: true
     },
-    discountpercentage:{
+    discount:{
         type:Number,
         required: true,
         default:0,
         min:0,
         max:100
     },
-    isActive:{
+    active:{
         type:Boolean,
         default:true
     }
